@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class StudentController {
     @Autowired
     private StudentServiceImpl service;
-
     @RequestMapping("/studentSelfUpdate")
     @ResponseBody
     Student selfUpdate(@RequestBody Student s1){

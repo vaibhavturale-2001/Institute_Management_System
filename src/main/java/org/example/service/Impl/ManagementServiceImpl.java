@@ -10,7 +10,8 @@ import java.util.List;
 
 public interface ManagementServiceImpl {
 
-    //==========Teacher=============================================
+    Management managementSelfUpdate(Management m1);
+    //==========Teacher======================================
     void insertSingleTeacher(Teacher t1);
     void insertMultipleTeacher(List<Teacher> teacherList);
     Teacher selectSingleTeacher(int id);
@@ -22,15 +23,6 @@ public interface ManagementServiceImpl {
     Boolean deleteMultipleTeacher(List<Integer>ids);
     Boolean deleteAllTeacher();
 
-    //=========== Student===============================================
-    void insertSingleStudent(Student s1);
-    void insertMultipleStudent(List<Student> studentList);
-    Student selectSingleStudent(int id);
-    List<Student> selectMultipleStudent(List<Integer> ids);
-    List<Student> selectAllStudent();
-    Student updateSingleStudent(Student s1);
-    List<Student> updateMultipleStudent(List<Student> studentList);
-    Boolean deleteSingleStudent(int id);
-    Boolean deleteMultipleStudent(List<Integer>ids);
-    Boolean deleteAllStudent();
+    //=========== Student=============================
+
 }

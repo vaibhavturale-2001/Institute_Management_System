@@ -84,80 +84,14 @@ public class AdminService implements AdminServiceImpl {
         Boolean result = false;
         for (int i = 0; i < ids.size(); i++) {
             resultList.add(repo.deleteSingleManagement(ids.get(i)));
-        }
-            if (resultList.equals(true)) {
-                result = true;
+            result=true;
         }
         return result;
-    }
+        }
+
+
     @Override
     public  Boolean deleteAllManagement(){
         return repo.deleteAllManagement();
-    }
-
-    //==================Teacher=============================
-    @Override
-    public void insertSingleTeacherA(Teacher t1) {
-        repo.insertSingleTeacherA(t1);
-    }
-
-    @Override
-    public void insertMultipleTeacherA(List<Teacher> teacherList) {
-        for (int i = 0; i < teacherList.size(); i++) {
-            repo.insertSingleTeacherA(teacherList.get(i));
-        }
-    }
-
-    @Override
-    public Teacher selectSingleTeacherA(@RequestParam int id) {
-        return repo.selectSingleTeacherA(id);
-    }
-
-    public List<Teacher> selectMultipleTeacherA(List<Integer> ids) {
-        List<Teacher> teacherList = new ArrayList<>();
-        for (int i = 0; i < ids.size(); i++) {
-            teacherList.add(repo.selectSingleTeacherA(ids.get(i)));
-        }
-        return teacherList;
-    }
-
-    @Override
-    public List<Teacher> selectAllTeacherA() {
-        return repo.selectAllTeacherA();
-    }
-
-    @Override
-    public Teacher updateSingleTeacherA(Teacher t1) {
-        return repo.updateSingleTeacherA(t1);
-    }
-
-    @Override
-    public List<Teacher> updateMultipleTeacherA(List<Teacher> teacherList) {
-        for (int i = 0; i < teacherList.size(); i++) {
-            repo.updateSingleTeacherA(teacherList.get(i));
-        }
-        return teacherList;
-    }
-
-    @Override
-    public Boolean deleteSingleTeacherA(int id) {
-        return repo.deleteSingleTeacherA(id);
-    }
-
-    @Override
-    public Boolean deleteMultipleTeacherA(List<Integer> ids) {
-        List<Boolean> resultList = new ArrayList<>();
-        Boolean result = false;
-        for (int i = 0; i < ids.size(); i++) {
-            resultList.add(repo.deleteSingleTeacherA(ids.get(i)));
-        }
-        if (resultList.equals(true)) {
-            result = true;
-        }
-        return result;
-    }
-    @Override
-    public  Boolean deleteAllTeacherA(){
-        return repo.deleteAllTeacherA();
     }
 }

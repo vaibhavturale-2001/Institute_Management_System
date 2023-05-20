@@ -15,18 +15,45 @@ import java.util.List;
 
 @Repository
 public class ManagementRepository implements ManagementRepoImpl {
-
-    //=======================Teacher========================
     String url="jdbc:mysql://localhost:3306/testinstitute";
     String userName="root";
     String password="";
+
+    @Override
+    public Management managementSelfUpdate(Management m1){
+        try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con= DriverManager.getConnection(url,userName,password);
+            Statement st=con.createStatement();
+            st.executeUpdate("update management set salary='"+m1.getSalary()+"',name='"+m1.getName()+"',email='"+m1.getEmail()+"'where id='"+m1.getId()+"'");
+        }catch (Exception e){
+            System.out.println(e);
+        }
+        return m1;
+    }
+    //=======================Teacher========================
     @Override
     public void insertSingleTeacher(Teacher t1){
         try{
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con= DriverManager.getConnection(url,userName,password);
             Statement st=con.createStatement();
-            st.executeUpdate("insert into teacher values('"+t1.getId()+"','"+t1.getSalary()+"','"+t1.getName()+"','"+t1.getEmail()+"','"+t1.getStudentList()+"')");
+            String sids=String.valueOf(t1.getStudentList().get(0).getRollNo());
+            for(int i=1;i<t1.getStudentList().size();i++){
+                sids=sids+","+t1.getStudentList().get(i).getRollNo();
+            }
+            //List<Student> studentList = new ArrayList<>();
+            st.executeUpdate("insert into teacher values('"+t1.getId()+"','"+t1.getSalary()+"','"+t1.getName()+"','"+t1.getEmail()+"','"+sids+"')");
+
+                for(int j=0;j<t1.getStudentList().size();j++){
+                    st.executeUpdate("insert into student values('"+t1.getStudentList().get(j).getRollNo()+"','"
+                            +t1.getStudentList().get(j).getFees()+"','"
+                            +t1.getStudentList().get(j).getAttendance()+"','"
+                            +t1.getStudentList().get(j).getName()+"','"
+                            +t1.getStudentList().get(j).getEmail()+"','"
+                            +t1.getStudentList().get(j).getBranch()+"')");
+                }
+
         }catch(Exception e){
             System.out.println(e);
         }
@@ -35,17 +62,41 @@ public class ManagementRepository implements ManagementRepoImpl {
     public Teacher selectSingleTeacher(int id){
         Teacher t1=new Teacher();
         try{
+            String t2=null;
+            List<Student>studentList=new ArrayList<>();
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con= DriverManager.getConnection(url,userName,password);
             Statement st=con.createStatement();
             ResultSet rs=st.executeQuery("select * from teacher where id='"+id+"'");
-            while (rs.next()){
+            List<Integer>sids=new ArrayList<>();
+            while (rs.next()) {
                 t1.setId(rs.getInt(1));
                 t1.setSalary(rs.getInt(2));
                 t1.setName(rs.getString(3));
                 t1.setEmail(rs.getString(4));
-                //t1.setStudentList(rs.get(5));
+                t1.setStudentList(studentList);
+                t2= rs.getString(5);
             }
+               // String t2=rs.getString(5);
+                String [] t2Split=t2.split(",");
+                for(int i=0;i< t2Split.length;i++){
+                    sids.add(Integer.parseInt(t2Split[i]));
+                }
+                for(int i=0;i<sids.size();i++){
+                    Student s2=new Student();
+                    ResultSet rs1=st.executeQuery("select * from student where rollNo='"+sids.get(i)+"'");
+                    while(rs1.next()){
+                        s2.setRollNo(rs1.getInt(1));
+                        s2.setFees(rs1.getInt(2));
+                        s2.setAttendance(rs1.getInt(3));
+                        s2.setName(rs1.getString(4));
+                        s2.setEmail(rs1.getString(5));
+                        s2.setBranch(rs1.getString(6));
+                    }
+                    studentList.add(s2);
+                }
+
+
         }catch(Exception e){
             System.out.println(e);
         }
@@ -55,6 +106,7 @@ public class ManagementRepository implements ManagementRepoImpl {
     public List<Teacher> selectAllTeacher(){
         List<Teacher> teacherList=new ArrayList<>();
         try{
+            List<Student>studentList=new ArrayList<>();
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con= DriverManager.getConnection(url,userName,password);
             Statement st=con.createStatement();
@@ -65,8 +117,9 @@ public class ManagementRepository implements ManagementRepoImpl {
                 t1.setSalary(rs.getInt(2));
                 t1.setName(rs.getString(3));
                 t1.setEmail(rs.getString(4));
-                //t1.setStudentList();
+                t1.setStudentList(studentList);
                 teacherList.add(t1);
+                teacherList.add(selectSingleTeacher(t1.getId()));
 
             }
         }catch(Exception e){
@@ -80,11 +133,21 @@ public class ManagementRepository implements ManagementRepoImpl {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con= DriverManager.getConnection(url,userName,password);
             Statement st=con.createStatement();
-            st.executeUpdate("update teacher set salary='"+t1.getSalary()+"',name='"+t1.getName()+"',email='"+t1.getEmail()+"','"+t1.getStudentList()+"'where id='"+t1.getId()+"'");
+            st.executeUpdate("update teacher set salary='"+t1.getSalary()+"',"
+                    +"name='"+t1.getName()+"',email='"+t1.getEmail()+"'where id='"+t1.getId()+"'");
+                   selectSingleTeacher(t1.getId());
+                for (int i = 0; i <t1.getStudentList().size(); i++) {
+                    st.executeUpdate("update student set fees='" + t1.getStudentList().get(i).getFees()
+                            + "',attendance='" + t1.getStudentList().get(i).getAttendance() + "',name='" + t1.getStudentList().get(i).getName()
+                            + "',email='" + t1.getStudentList().get(i).getEmail() + "',branch='" + t1.getStudentList().get(i).getBranch()
+                            + "' where rollNo='" + t1.getStudentList().get(i).getRollNo() + "'");
+                    selectSingleTeacher(t1.getStudentList().get(i).getRollNo());
+
+                }
         }catch(Exception e){
             System.out.println(e);
         }
-        return selectSingleTeacher(t1.getId());
+        return t1;
     }
     @Override
     public  Boolean deleteSingleTeacher(int id){
@@ -118,109 +181,4 @@ public class ManagementRepository implements ManagementRepoImpl {
         }
         return result;
     }
-
-
-    //=======================Student============================
-
-    @Override
-    public void insertSingleStudent(Student s1){
-        try{
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection con= DriverManager.getConnection(url,userName,password);
-            Statement st=con.createStatement();
-            st.executeUpdate("insert into student values('"+s1.getRollNo()+"','"+s1.getFees()+"','"+s1.getAttendance()+"','"+s1.getName()+"','"+s1.getEmail()+"','"+s1.getBranch()+"')");
-        }catch(Exception e){
-            System.out.println(e);
-        }
-    }
-    @Override
-    public Student selectSingleStudent(int id){
-        Student s1=new Student();
-        try{
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection con= DriverManager.getConnection(url,userName,password);
-            Statement st=con.createStatement();
-            ResultSet rs=st.executeQuery("select * from student where id='"+id+"'");
-            while (rs.next()){
-                s1.setRollNo(rs.getInt(1));
-                s1.setFees(rs.getInt(2));
-                s1.setAttendance(rs.getInt(3));
-                s1.setName(rs.getString(4));
-                s1.setEmail(rs.getString(5));
-                s1.setBranch(rs.getString(6));
-            }
-        }catch(Exception e){
-            System.out.println(e);
-        }
-        return s1;
-    }
-    @Override
-    public List<Student> selectAllStudent(){
-        List<Student> studentList=new ArrayList<>();
-        try{
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection con= DriverManager.getConnection(url,userName,password);
-            Statement st=con.createStatement();
-            ResultSet rs=st.executeQuery("select * from student");
-            while(rs.next()) {
-                Student s1 = new Student();
-                s1.setRollNo(rs.getInt(1));
-                s1.setFees(rs.getInt(2));
-                s1.setAttendance(rs.getInt(3));
-                s1.setName(rs.getString(4));
-                s1.setEmail(rs.getString(5));
-                s1.setBranch(rs.getString(6));
-                studentList.add(s1);
-            }
-        }catch(Exception e){
-            System.out.println(e);
-        }
-        return studentList;
-    }
-    @Override
-    public Student updateSingleStudent(Student s1){
-        try{
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection con= DriverManager.getConnection(url,userName,password);
-            Statement st=con.createStatement();
-            st.executeUpdate("update teacher set fees='"+s1.getFees()+"',attendence='"+s1.getAttendance()+"',name='"+s1.getName()+"',email='"+s1.getEmail()+"','"+s1.getBranch()+"'where id='"+s1.getRollNo()+"'");
-        }catch(Exception e){
-            System.out.println(e);
-        }
-        return selectSingleStudent(s1.getRollNo());
-    }
-    @Override
-    public  Boolean deleteSingleStudent(int id){
-        boolean result=false;
-        try{
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection con= DriverManager.getConnection(url,userName,password);
-            Statement st=con.createStatement();
-            int studentResult=st.executeUpdate("delete from student where id='"+id+"'");
-            if(studentResult>0){
-                result=true;
-            }
-        }catch(Exception e){
-            System.out.println(e);
-        }
-        return result;
-    }
-    @Override
-    public  Boolean deleteAllStudent(){
-        Boolean result=false;
-        try{
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection con= DriverManager.getConnection(url,userName,password);
-            Statement st=con.createStatement();
-            int studentResult=st.executeUpdate("delete from student");
-            if(studentResult>0){
-                result=true;
-            }
-        }catch(Exception e){
-            System.out.println(e);
-        }
-        return result;
-    }
-
-
 }

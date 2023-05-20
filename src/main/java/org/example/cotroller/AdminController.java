@@ -1,9 +1,12 @@
 package org.example.cotroller;
 
 import org.example.model.Management;
+import org.example.model.Student;
 import org.example.model.Teacher;
 import org.example.service.Impl.AdminServiceImpl;
+import org.example.service.Impl.ManagementServiceImpl;
 import org.example.service.Impl.StudentServiceImpl;
+import org.example.service.Impl.TeacherServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,109 +21,164 @@ public class AdminController{
     @Autowired
     private AdminServiceImpl service;
 
-    @RequestMapping("/insertSingleManagement")
+    @RequestMapping("/insertSingleManagementA")
     @ResponseBody
     void insertSingleManagement(@RequestBody Management m1){
         service.insertSingleManagement(m1);
     }
-    @RequestMapping("/insertMultipleManagement")
+    @RequestMapping("/insertMultipleManagementA")
     @ResponseBody
     void insertMultipleManagement(@RequestBody List<Management> managementList){
         service.insertMultipleManagement(managementList);
     }
-    @RequestMapping("/selectSingleManagement")
+    @RequestMapping("/selectSingleManagementA")
     @ResponseBody
     Management selectSingleManagement(@RequestParam int id){
         return service.selectSingleManagement(id);
     }
-    @RequestMapping("/selectMultipleManagement")
+    @RequestMapping("/selectMultipleManagementA")
     @ResponseBody
     List<Management> selectMultipleManagement(@RequestParam List<Integer> ids){
         return service.selectMultipleManagement(ids);
     }
-    @RequestMapping("selectAllManagement")
+    @RequestMapping("selectAllManagementA")
     @ResponseBody
     List<Management> selectAllManagement(){
         return service.selectAllManagement();
     }
-    @RequestMapping("updateSingleManagement")
+    @RequestMapping("updateSingleManagementA")
     @ResponseBody
     Management updateSingleManagement(@RequestBody Management m1){
         return service.updateSingleManagement(m1);
     }
-    @RequestMapping("updateMultipleManagement")
+    @RequestMapping("updateMultipleManagementA")
     @ResponseBody
     List<Management> updateMultipleManagement(@RequestBody List<Management> managementList){
         return service.updateMultipleManagement(managementList);
     }
-    @RequestMapping("deleteSingleManagement")
+    @RequestMapping("deleteSingleManagementA")
     @ResponseBody
     Boolean deleteSingleManagement(@RequestParam int id){
         return service.deleteSingleManagement(id);
     }
-    @RequestMapping("deleteMultipleManagement")
+    @RequestMapping("deleteMultipleManagementA")
     @ResponseBody
     Boolean deleteMultipleManagement(@RequestParam List<Integer>ids){
         return service.deleteMultipleManagement(ids);
     }
-    @RequestMapping("deleteAllManagement")
+    @RequestMapping("deleteAllManagementA")
     @ResponseBody
     Boolean deleteAllManagement(){
         return service.deleteAllManagement();
     }
 
-    //======================Teacher===========================
-
-
+    //======================Teacher=========================
+    @Autowired
+    private ManagementServiceImpl serviceM;
     @RequestMapping("/insertSingleTeacherA")
     @ResponseBody
     void insertSingleTeacherA(@RequestBody Teacher t1){
-        service.insertSingleTeacherA(t1);
+        serviceM.insertSingleTeacher(t1);
     }
     @RequestMapping("/insertMultipleTeacherA")
     @ResponseBody
     void insertMultipleTeacherA(@RequestBody List<Teacher> teacherList){
-        service.insertMultipleTeacherA(teacherList);
+        serviceM.insertMultipleTeacher(teacherList);
     }
     @RequestMapping("/selectSingleTeacherA")
     @ResponseBody
     Teacher selectSingleTeacherA(@RequestParam int id){
-        return service.selectSingleTeacherA(id);
+        return serviceM.selectSingleTeacher(id);
     }
     @RequestMapping("/selectMultipleTeacherA")
     @ResponseBody
     List<Teacher> selectMultipleTeacherA(@RequestParam List<Integer> ids){
-        return service.selectMultipleTeacherA(ids);
+        return serviceM.selectMultipleTeacher(ids);
     }
     @RequestMapping("selectAllTeacherA")
     @ResponseBody
     List<Teacher> selectAllTeacherA(){
-        return service.selectAllTeacherA();
+        return serviceM.selectAllTeacher();
     }
     @RequestMapping("updateSingleTeacherA")
     @ResponseBody
     Teacher updateSingleTeacherA(@RequestBody Teacher t1){
-        return service.updateSingleTeacherA(t1);
+        return serviceM.updateSingleTeacher(t1);
     }
     @RequestMapping("updateMultipleTeacherA")
     @ResponseBody
     List<Teacher> updateMultipleTeacherA(@RequestBody List<Teacher> teacherList){
-        return service.updateMultipleTeacherA(teacherList);
+        return serviceM.updateMultipleTeacher(teacherList);
     }
     @RequestMapping("deleteSingleTeacherA")
     @ResponseBody
     Boolean deleteSingleTeacherA(@RequestParam int id){
-        return service.deleteSingleTeacherA(id);
+        return serviceM.deleteSingleTeacher(id);
     }
     @RequestMapping("deleteMultipleTeacherA")
     @ResponseBody
     Boolean deleteMultipleTeacherA(@RequestParam List<Integer>ids){
-        return service.deleteMultipleTeacherA(ids);
+        return serviceM.deleteMultipleTeacher(ids);
     }
     @RequestMapping("deleteAllTeacherA")
     @ResponseBody
-    Boolean deleteAllTeacherA(){
-        return service.deleteAllTeacherA();
+    Boolean deleteAllTeacher(){
+        return serviceM.deleteAllTeacher();
     }
+
+//======================Student======================
+        @Autowired
+        private TeacherServiceImpl serviceT;
+
+        @RequestMapping("/insertSingleStudentA")
+        @ResponseBody
+        void insertSingleStudent(@RequestBody Student s1){
+            serviceT.insertSingleStudent(s1);
+        }
+        @RequestMapping("/insertMultipleStudentA")
+        @ResponseBody
+        void insertMultipleStudent(@RequestBody List<Student> studentList){
+            serviceT.insertMultipleStudent(studentList);
+        }
+        @RequestMapping("/selectSingleStudentA")
+        @ResponseBody
+        Student selectSingleStudent(@RequestParam int rollNo){
+            return serviceT.selectSingleStudent(rollNo);
+        }
+        @RequestMapping("/selectMultipleStudentA")
+        @ResponseBody
+        List<Student> selectMultipleStudent(@RequestParam List<Integer> rollNos){
+            return serviceT.selectMultipleStudent(rollNos);
+        }
+        @RequestMapping("selectAllStudentA")
+        @ResponseBody
+        List<Student> selectAllStudent(){
+            return serviceT.selectAllStudent();
+        }
+        @RequestMapping("updateSingleStudentA")
+        @ResponseBody
+        Student updateSingleStudent(@RequestBody Student s1){
+            return serviceT.updateSingleStudent(s1);
+        }
+        @RequestMapping("updateMultipleStudentA")
+        @ResponseBody
+        List<Student> updateMultipleStudent(@RequestBody List<Student> studentList){
+            return serviceT.updateMultipleStudent(studentList);
+        }
+        @RequestMapping("deleteSingleStudentA")
+        @ResponseBody
+        Boolean deleteSingleStudent(@RequestParam int rollNo){
+            return serviceT.deleteSingleStudent(rollNo);
+        }
+        @RequestMapping("deleteMultipleStudentA")
+        @ResponseBody
+        Boolean deleteMultipleStudent(@RequestParam List<Integer>rollNos){
+            return serviceT.deleteMultipleStudent(rollNos);
+        }
+        @RequestMapping("deleteAllStudentA")
+        @ResponseBody
+        Boolean deleteAllStudent(){
+            return serviceT.deleteAllStudent();
+        }
 
 }

@@ -6,18 +6,18 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
-public interface TeacherServiceImpl {
+public interface TeacherServiceImpl{
 
     Teacher teacherSelfUpdate(Teacher t1);
 
     void insertSingleStudent(Student s1);
     void insertMultipleStudent(List<Student> studentList);
-    Student selectSingleStudent(int id);
-    List<Student> selectMultipleStudent(List<Integer> ids);
+    Student selectSingleStudent(int rollNo);
+    List<Student> selectMultipleStudent(List<Integer> rollNos);
     List<Student> selectAllStudent();
     Student updateSingleStudent(Student s1);
     List<Student> updateMultipleStudent(List<Student> studentList);
-    Boolean deleteSingleStudent(int id);
-    Boolean deleteMultipleStudent(List<Integer>ids);
+    Boolean deleteSingleStudent(int rollNo);
+    Boolean deleteMultipleStudent(List<Integer>rollNos);
     Boolean deleteAllStudent();
 }

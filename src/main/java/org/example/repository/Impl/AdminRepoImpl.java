@@ -13,12 +13,4 @@ public interface AdminRepoImpl {
     Management updateSingleManagement(Management m1);
     Boolean deleteSingleManagement(int id);
     Boolean deleteAllManagement();
-
-
-    void insertSingleTeacherA(Teacher t1);
-    Teacher selectSingleTeacherA(int id);
-    List<Teacher> selectAllTeacherA();
-    Teacher updateSingleTeacherA(Teacher m1);
-    Boolean deleteSingleTeacherA(int id);
-    Boolean deleteAllTeacherA();
 }

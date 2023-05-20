@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 public class StudentService implements StudentServiceImpl {
     @Autowired
     private StudentRepoImpl repo;
-
     @Override
     public Student selfUpdate(Student s1){
         return repo.selfUpdate(s1);

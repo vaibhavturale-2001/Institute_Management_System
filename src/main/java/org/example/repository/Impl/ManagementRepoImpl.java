@@ -8,20 +8,13 @@ import java.util.List;
 
 public interface ManagementRepoImpl {
 
+    Management managementSelfUpdate(Management m1);
+
     //==========Teacher=========================
     void insertSingleTeacher(Teacher t1);
-    Teacher selectSingleTeacher(int id);
+    Teacher selectSingleTeacher(int rollNo);
     List<Teacher> selectAllTeacher();
     Teacher updateSingleTeacher(Teacher t1);
-    Boolean deleteSingleTeacher(int id);
+    Boolean deleteSingleTeacher(int rollNo);
     Boolean deleteAllTeacher();
-
-    //===========Students========================
-
-    void insertSingleStudent(Student s1);
-    Student selectSingleStudent(int id);
-    List<Student> selectAllStudent();
-    Student updateSingleStudent(Student s1);
-    Boolean deleteSingleStudent(int id);
-    Boolean deleteAllStudent();
 }
